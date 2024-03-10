@@ -1,0 +1,2 @@
+import"./assets/style-66c2d315.js";import{i as l}from"./assets/vendor-77e16229.js";const t=document.querySelector(".form");function n(r){r.preventDefault();const e=t.elements.delay.value,a=t.elements.state.value,s=setInterval(()=>{a==="fulfilled"?(l.success({message:`✅ Fulfilled promise in ${e}ms`}),clearInterval(s)):(l.error({message:`❌ Rejected promise in ${e}ms`}),clearInterval(s))},e)}t.addEventListener("submit",n);
+//# sourceMappingURL=commonHelpers2.js.map
