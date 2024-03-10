@@ -6,18 +6,17 @@ function handleSubmit(event) {
   event.preventDefault();
   const delay = form.elements.delay.value;
   const state = form.elements.state.value;
-  const timer = setInterval(() => {
-    if (state === 'fulfilled') {
-      iziToast.success({
-        message: `✅ Fulfilled promise in ${delay}ms`,
-      });
-      clearInterval(timer);
-    } else {
-      iziToast.error({
-        message: `❌ Rejected promise in ${delay}ms`,
-      });
-      clearInterval(timer);
-    }
-  }, delay);
+  const promise = new Promise((resolve, reject) => {
+    setTimeout(() => {
+      if (state === 'fulfilled') {
+        resolve(`✅ Fulfilled promise in ${delay}ms`);
+      } else {
+        reject(`❌ Rejected promise in ${delay}ms`);
+      }
+    }, delay);
+  });
+  promise
+    .then(value => iziToast.success({ message: value }))
+    .catch(error => iziToast.error({ message: error }));
 }
 form.addEventListener('submit', handleSubmit);
