@@ -21,4 +21,3 @@ function handleSubmit(event) {
   }, delay);
 }
 form.addEventListener('submit', handleSubmit);
-
