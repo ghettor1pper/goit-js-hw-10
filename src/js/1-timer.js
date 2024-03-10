@@ -1,5 +1,7 @@
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
+import iziToast from 'izitoast';
+import 'izitoast/dist/css/iziToast.min.css';
 //    ........   //
 function convertMs(ms) {
   // Number of milliseconds per unit of time
@@ -8,18 +10,20 @@ function convertMs(ms) {
   const hour = minute * 60;
   const day = hour * 24;
 
-  // Remaining days
   const days = Math.floor(ms / day);
-  // Remaining hours
+
   const hours = Math.floor((ms % day) / hour);
-  // Remaining minutes
+
   const minutes = Math.floor(((ms % day) % hour) / minute);
-  // Remaining seconds
+
   const seconds = Math.floor((((ms % day) % hour) % minute) / second);
 
   return { days, hours, minutes, seconds };
 }
-
+function addLeadingZero(value) {
+  const result = new String(value).padStart(2, '0');
+  return result;
+}
 const startButton = document.querySelector('button[data-start]');
 startButton.setAttribute('disabled', 'disabled');
 const daysOutput = document.querySelector('span[data-days]');
@@ -37,7 +41,10 @@ const options = {
   onClose(selectedDates) {
     const currentDate = new Date();
     if (selectedDates[0] <= currentDate) {
-      window.alert('Please choose a date in the future');
+      iziToast.error({
+        title: 'Error',
+        message: 'Please select a future date in the future',
+      });
       startButton.setAttribute('disabled', 'disabled');
       return;
     }
@@ -48,10 +55,10 @@ const options = {
 };
 flatpickr('#datetime-picker', options);
 function showOutputDate(days, hours, minutes, seconds) {
-  daysOutput.textContent = days;
-  hoursOutput.textContent = hours;
-  minutesOutput.textContent = minutes;
-  secondOutput.textContent = seconds;
+  daysOutput.textContent = addLeadingZero(days);
+  hoursOutput.textContent = addLeadingZero(hours);
+  minutesOutput.textContent = addLeadingZero(minutes);
+  secondOutput.textContent = addLeadingZero(seconds);
 }
 function updateDisplayOutputCountdown(endTime) {
   const currentDate = Date.now();
